@@ -1,17 +1,40 @@
 {
   "name": "node-lifecycle",
   "version": "1.0.0",
+  "description": "CLI tool to check Node.js version lifecycle and EOL status",
   "type": "module",
   "bin": {
     "node-lifecycle": "./dist/cli.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
     "build": "tsc",
     "start": "ts-node src/cli.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepublishOnly": "npm run build"
   },
+  "keywords": [
+    "node",
+    "cli",
+    "lifecycle",
+    "eol",
+    "nodejs",
+    "lts",
+    "maintenance"
+  ],
+  "author": "Kelsey Salguera",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ksalguera/node-lifecycle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ksalguera/node-lifecycle/issues"
+  },
+  "homepage": "https://github.com/ksalguera/node-lifecycle#readme",
   "dependencies": {
     "semver": "^7.6.0"
   },
@@ -23,5 +46,9 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
+
