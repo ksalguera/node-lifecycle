@@ -1,6 +1,6 @@
 {
   "name": "node-lifecycle",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to check Node.js version lifecycle and EOL status",
   "type": "module",
   "bin": {
@@ -51,4 +51,3 @@
     "node": ">=18.0.0"
   }
 }
-
