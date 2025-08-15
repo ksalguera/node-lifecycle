@@ -1,0 +1,37 @@
+version: 2.1
+
+jobs:
+  node-lifecycle-check:
+    docker:
+      - image: cimg/node:24.3
+    steps:
+      - checkout
+      - run: npm ci
+      - run:
+          name: Node lifecycle check
+          command: npx node-lifecycle --warn-days=180 --cache-ttl=86400000
+
+  node-lifecycle-check-nightly:
+    docker:
+      - image: cimg/node:24.3
+    steps:
+      - checkout
+      - run: npm ci
+      - run:
+          name: Node lifecycle check (fresh schedule)
+          command: npx node-lifecycle --warn-days=180 --cache-ttl=0
+
+workflows:
+  push_checks:
+    jobs:
+      - node-lifecycle-check
+
+  nightly_checks:
+    triggers:
+      - schedule:
+          cron: "0 2 * * *"
+          filters:
+            branches:
+              only: main
+    jobs:
+      - node-lifecycle-check-nightly
