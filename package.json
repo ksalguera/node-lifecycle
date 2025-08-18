@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/ksalguera/node-lifecycle#readme",
   "dependencies": {
+    "node-lifecycle": "^1.0.3",
     "semver": "^7.6.0"
   },
   "devDependencies": {
