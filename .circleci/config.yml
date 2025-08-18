@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  node-lifecycle-check:
+  check-node:
     docker:
       - image: cimg/node:24.3
     steps:
@@ -12,43 +12,26 @@ jobs:
           name: Node lifecycle check
           command: node dist/cli.js --warn-days=180 --cache-ttl=86400000
 
-  node-lifecycle-check-nightly:
-    docker:
-      - image: cimg/node:24.3
-    steps:
-      - checkout
-      - run: npm ci
-      - run: npm run build
-      - run:
-          name: Node lifecycle check
-          command: node dist/cli.js --warn-days=180 --cache-ttl=0
-
-  npm-audit:
+  audit-and-test:
     docker:
       - image: cimg/node:24.3
     steps:
       - checkout
       - run: npm ci
       - run:
-          name: npm audit (all severities)
+          name: npm audit
           command: npm audit
-
-  npm-test:
-    docker:
-      - image: cimg/node:24.3
-    steps:
-      - checkout
-      - run: npm ci
-      - run: npm test
+      - run:
+          name: npm test
+          command: npm test
 
 workflows:
-  small-tasks:
+  ci:
     jobs:
-      - node-lifecycle-check
-      - npm-audit
-      - npm-test
+      - check-node
+      - audit-and-test
 
-  nightly_checks:
+  nightly:
     triggers:
       - schedule:
           cron: "0 2 * * *"
@@ -56,6 +39,5 @@ workflows:
             branches:
               only: main
     jobs:
-      - node-lifecycle-check-nightly
-      - npm-audit
-      - npm-test
+      - check-node
+      - audit-and-test
