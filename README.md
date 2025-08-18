@@ -10,17 +10,56 @@ Check the lifecycle status (Current, Active LTS, Maintenance, or EOL) of any Nod
 
 ## 📦 Installation
 
-Install globally to use the CLI anywhere:
-
-```bash
+### Option 1: Global install (CLI available anywhere)
+```
 npm install -g node-lifecycle
 ```
 
-Or run without installing globally:
+After this, you can run the CLI directly:
+
+```
+node-lifecycle
+```
+
+### Option 2: Local install (in your project)
+
+```
+npm install --save-dev node-lifecycle
+```
+
+With a local install, binaries live in `node_modules/.bin`.
+
+You can run it in one of two ways:
+
+Use npx (simple):
 
 ```
 npx node-lifecycle
 ```
+
+OR: 
+
+Add an npm script:
+```
+"scripts": {
+  "check-node": "node-lifecycle"
+}
+```
+
+Then run:
+```
+npm run check-node
+```
+
+### Option 3: Run without installing at all
+
+```
+npx node-lifecycle
+```
+
+This will fetch the latest version from npm on demand.
+
+### Option 4: CircleCi Only - See CI Config Below
 
 ## 🚀 Usage
 
@@ -75,7 +114,46 @@ node-lifecycle --version=18.20.4 --no-fail
 | `2`  | EOL (unless `--no-fail` is used, then `0`) |
 
 
-## 🧪 CI Integration
+## 🧪 CI Integration and GitHub Actions
+
+### CircleCI
+
+There are two ways to use `node-lifecycle` in CircleCI:
+
+**Without installing in your repo (uses npx)**
+
+This always fetches the latest published version from npm:
+
+```
+jobs:
+  verify:
+    docker:
+      - image: cimg/node:20.12
+    steps:
+      - checkout
+      - run:
+          name: Node lifecycle check
+          command: npx node-lifecycle --warn-days=180
+```
+
+**With devDependencies (preferred if already in your repo)**
+
+If you already have `node-lifecycle` in devDependencies, `npm ci` will install it and you can run it directly:
+
+```
+jobs:
+  verify:
+    docker:
+      - image: cimg/node:20.12
+    steps:
+      - checkout
+      - run: npm ci
+      - run:
+          name: Node lifecycle check
+          command: node-lifecycle --warn-days=180
+```
+
+### GitHub Actions
 
 Example GitHub Actions job to fail if Node.js is near or past EOL:
 
@@ -88,6 +166,7 @@ jobs:
       - run: npm install -g node-lifecycle
       - run: node-lifecycle
 ```
+
 
 ## 📄 License
 
