@@ -1,25 +1,27 @@
 version: 2.1
 
 jobs:
-  # node-lifecycle-check:
-  #   docker:
-  #     - image: cimg/node:24.3
-  #   steps:
-  #     - checkout
-  #     - run: npm ci
-  #     - run:
-  #         name: Node lifecycle check
-  #         command: npx node-lifecycle --warn-days=180 --cache-ttl=86400000
+  node-lifecycle-check:
+    docker:
+      - image: cimg/node:24.3
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run build
+      - run:
+          name: Node lifecycle check
+          command: node dist/cli.js --warn-days=180 --cache-ttl=86400000
 
-  # node-lifecycle-check-nightly:
-  #   docker:
-  #     - image: cimg/node:24.3
-  #   steps:
-  #     - checkout
-  #     - run: npm ci
-  #     - run:
-  #         name: Node lifecycle check (fresh schedule)
-  #         command: npx node-lifecycle --warn-days=180 --cache-ttl=0
+  node-lifecycle-check-nightly:
+    docker:
+      - image: cimg/node:24.3
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run build
+      - run:
+          name: Node lifecycle check
+          command: node dist/cli.js --warn-days=180 --cache-ttl=0
 
   npm-audit:
     docker:
@@ -28,15 +30,23 @@ jobs:
       - checkout
       - run: npm ci
       - run:
-          name: npm audit (fail on high+)
-          command: |
-            npm audit --audit-level=hig
+          name: npm audit (all severities)
+          command: npm audit
+
+  npm-test:
+    docker:
+      - image: cimg/node:24.3
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm test
 
 workflows:
   small-tasks:
     jobs:
+      - node-lifecycle-check
       - npm-audit
-      # - node-lifecycle-check
+      - npm-test
 
   nightly_checks:
     triggers:
@@ -46,5 +56,6 @@ workflows:
             branches:
               only: main
     jobs:
+      - node-lifecycle-check-nightly
       - npm-audit
-      # - node-lifecycle-check-nightly
+      - npm-test
