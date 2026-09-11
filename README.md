@@ -1,6 +1,6 @@
 # node-lifecycle
 
-Check the lifecycle status (Current, Active LTS, Maintenance, or EOL) of any Node.js version — right from your terminal.
+Check the lifecycle status (Current, Active LTS, Maintenance, or EOL) of any Node.js version.
 
 [![npm version](https://img.shields.io/npm/v/node-lifecycle.svg)](https://www.npmjs.com/package/node-lifecycle)
 [![license](https://img.shields.io/npm/l/node-lifecycle.svg)](LICENSE)
@@ -59,7 +59,9 @@ npx node-lifecycle
 
 This will fetch the latest version from npm on demand.
 
-### Option 4: CircleCi Only - See CI Config Below
+### Option 4: CircleCI configuration example
+
+See the [CircleCI configuration example](documentation/circleci-config-example.md).
 
 ## 🚀 Usage
 
@@ -116,43 +118,6 @@ node-lifecycle --version=18.20.4 --no-fail
 
 ## 🧪 CI Integration and GitHub Actions
 
-### CircleCI
-
-There are two ways to use `node-lifecycle` in CircleCI:
-
-**Without installing in your repo (uses npx)**
-
-This always fetches the latest published version from npm:
-
-```
-jobs:
-  verify:
-    docker:
-      - image: cimg/node:20.12
-    steps:
-      - checkout
-      - run:
-          name: Node lifecycle check
-          command: npx node-lifecycle --warn-days=180
-```
-
-**With devDependencies (preferred if already in your repo)**
-
-If you already have `node-lifecycle` in devDependencies, `npm ci` will install it and you can run it directly:
-
-```
-jobs:
-  verify:
-    docker:
-      - image: cimg/node:20.12
-    steps:
-      - checkout
-      - run: npm ci
-      - run:
-          name: Node lifecycle check
-          command: node-lifecycle --warn-days=180
-```
-
 ### GitHub Actions
 
 Example GitHub Actions job to fail if Node.js is near or past EOL:
@@ -170,6 +135,6 @@ jobs:
 
 ## 📄 License
 
-MIT © 2025 Kelsey Salguera
+MIT © 2026 Kelsey Salguera
 
 Note: This tool fetches Node.js release schedules from official sources (nodejs/Release and endoflife.date) and caches them locally for faster performance.
