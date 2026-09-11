@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ksalguera/node-lifecycle.git"
+    "url": "git+https://github.com/ksalguera/node-lifecycle.git"
   },
   "bugs": {
     "url": "https://github.com/ksalguera/node-lifecycle/issues"
