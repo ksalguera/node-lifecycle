@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/ksalguera/node-lifecycle/compare/v1.0.6...v1.1.0) (2026-09-11)
+
+
+### Features
+
+* add support for v26 and unknown future releases ([08ee79a](https://github.com/ksalguera/node-lifecycle/commit/08ee79a3e14537438f3a810e56c920eb9825af17))
+
 ## [1.0.6](https://github.com/ksalguera/node-lifecycle/compare/v1.0.5...v1.0.6) (2026-09-11)
 
 
