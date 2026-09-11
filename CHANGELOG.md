@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/ksalguera/node-lifecycle/compare/v1.1.0...v1.2.0) (2026-09-11)
+
+
+### Features
+
+* improve package discoverability ([d733251](https://github.com/ksalguera/node-lifecycle/commit/d733251c81ac22c6cb19a0f92bace494c2fba3c4))
+
 ## [1.1.0](https://github.com/ksalguera/node-lifecycle/compare/v1.0.6...v1.1.0) (2026-09-11)
 
 
