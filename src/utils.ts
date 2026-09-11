@@ -5,6 +5,7 @@ export const CODENAMES: Readonly<Record<number, string>> = {
   20: "Iron",
   22: "Jod",
   24: "Krypton",
+  26: "Lithium",
 } as const;
 
 const toValidDate = (iso?: string) => {
@@ -12,6 +13,15 @@ const toValidDate = (iso?: string) => {
   const d = new Date(iso);
   return Number.isNaN(d.getTime()) ? null : d;
 };
+
+function releasedMajors(schedule: Schedule, now: Date): number[] {
+  return Object.keys(schedule).map(Number).filter((major) => {
+    if (!Number.isFinite(major)) return false;
+    const start = toValidDate(schedule[String(major)]?.start);
+    // Sources without a start date retain the existing fallback behavior.
+    return !start || start <= now;
+  });
+}
 
 // ISO → friendly date without TZ drift
 export function formatFriendlyDate(isoDate?: string): string {
@@ -29,6 +39,7 @@ export function formatFriendlyDate(isoDate?: string): string {
 
 /**
  * Return ALL active LTS majors.
+ * Only consider releases whose known start date has arrived.
  * Normal path: require ltsStart <= now && eol > now.
  * Fallback path (when no majors have an `lts` field at all, e.g. endoflife.date only):
  *   infer LTS = even majors with eol > now, EXCLUDING the highest supported major (assumed Current).
@@ -37,7 +48,7 @@ export function findActiveLTS(schedule: Schedule, now = new Date()): number[] {
   const keys = Object.keys(schedule);
   if (keys.length === 0) return [];
 
-  const majors = keys.map(Number).filter(Number.isFinite);
+  const majors = releasedMajors(schedule, now);
   const anyLtsInfo = majors.some((m) => !!schedule[String(m)]?.lts);
 
   if (anyLtsInfo) {
@@ -66,14 +77,14 @@ export function findActiveLTS(schedule: Schedule, now = new Date()): number[] {
 }
 
 /**
- * Latest Current (supported & not yet LTS).
+ * Latest Current (released, supported & not yet LTS).
  * Fallback (no `lts` fields): the highest supported major.
  */
 export function findCurrent(schedule: Schedule, now = new Date()): number | null {
   const keys = Object.keys(schedule);
   if (keys.length === 0) return null;
 
-  const majors = keys.map(Number).filter(Number.isFinite);
+  const majors = releasedMajors(schedule, now);
   const anyLtsInfo = majors.some((m) => !!schedule[String(m)]?.lts);
 
   if (anyLtsInfo) {
@@ -96,7 +107,9 @@ export function findCurrent(schedule: Schedule, now = new Date()): number | null
   return supported.length ? Math.max(...supported) : null;
 }
 
-export function codenameFor(major?: number | null): string {
+export function codenameFor(major?: number | null, schedule?: Schedule): string {
   if (!Number.isFinite(major as number)) return "";
+  const release = schedule?.[String(major)];
+  if (release?.codename?.trim()) return release.codename.trim();
   return CODENAMES[major as number] || "";
 }

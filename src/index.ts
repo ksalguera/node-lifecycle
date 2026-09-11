@@ -48,12 +48,19 @@ async function fetchJson(url: string): Promise<any> {
   return r.json();
 }
 
+// Strip the upstream prefix without collapsing historical lines such as v0.10.
+function normalizeScheduleKeys(schedule: Schedule): Schedule {
+  return Object.fromEntries(
+    Object.entries(schedule).map(([version, release]) => [version.replace(/^v/, ""), release])
+  );
+}
+
 async function fetchWG(ttlMs: number): Promise<Schedule> {
   const url = "https://raw.githubusercontent.com/nodejs/Release/HEAD/schedule.json";
   const cacheName = "schedule.wg.json";
   const cached = await readCache(cacheName, ttlMs);
-  if (cached) return cached as Schedule;
-  const data = (await fetchJson(url)) as Schedule;
+  if (cached) return normalizeScheduleKeys(cached as Schedule);
+  const data = normalizeScheduleKeys((await fetchJson(url)) as Schedule);
   await writeCache(cacheName, data);
   return data;
 }
@@ -125,6 +132,11 @@ export function classify(nodeVersion: string, schedule: Schedule): Classificatio
   if (!rel) return { major, status: "unknown" };
 
   const now = new Date();
+
+  // A scheduled release is not supported before its initial release date.
+  if (rel.start && new Date(rel.start) > now) {
+    return { major, status: "unknown" };
+  }
 
   // If no end date or invalid date → unknown
   if (!rel.end || Number.isNaN(new Date(rel.end).getTime())) {

@@ -78,13 +78,13 @@ async function main() {
 
     // Only recommend LTS if it's newer than the user's major
     if (Number.isFinite(topLts) && topLts > result.major) {
-      const name = codenameFor(topLts);
+      const name = codenameFor(topLts, schedule);
       rec.push(`LTS v${topLts}${name ? ` (“${name}”)` : ""}`);
     }
 
     // Always recommend Current unless they're already on it
     if (current && current !== result.major) {
-      const name = codenameFor(current);
+      const name = codenameFor(current, schedule);
       rec.push(`Current v${current}${name ? ` (“${name}”)` : ""}`);
     }
 
@@ -102,7 +102,7 @@ async function main() {
 
   // Unknown line → warn (non-fatal)
   if (result.status === "unknown") {
-    console.warn(`⚠️  Node ${runtime} → unknown release line (no schedule data).`);
+    console.warn(`⚠️  Node ${runtime} → unknown or unreleased line (check version and schedule data).`);
     process.exit(1);
   }
 
@@ -117,7 +117,7 @@ async function main() {
 
   // Supported OK
   const eolPretty = formatFriendlyDate(result.eol);
-  const code = codenameFor(result.major);
+  const code = codenameFor(result.major, schedule);
   const suffix = code ? ` (“${code}”)` : "";
   console.log(`✅ Node ${runtime} (major ${result.major})${suffix} → ${result.status}. EOL ${result.eol} (${eolPretty}) in ${result.daysToEol} days.`);
   process.exit(0);
