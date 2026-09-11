@@ -1,7 +1,7 @@
 {
   "name": "node-lifecycle",
   "version": "1.1.0",
-  "description": "CLI tool to check Node.js version lifecycle and EOL status",
+  "description": "Node.js EOL checker and CLI for checking version lifecycle, LTS, maintenance, and end-of-life status",
   "type": "module",
   "bin": {
     "node-lifecycle": "./dist/cli.js"
@@ -18,12 +18,19 @@
   },
   "keywords": [
     "node",
+    "nodejs",
+    "node.js",
+    "node-version",
+    "ci",
     "cli",
     "lifecycle",
     "eol",
+    "eol-checker",
+    "end-of-life",
     "nodejs",
     "lts",
-    "maintenance"
+    "maintenance",
+    "version-checker"
   ],
   "author": "Kelsey Salguera",
   "license": "MIT",
