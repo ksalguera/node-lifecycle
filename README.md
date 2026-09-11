@@ -120,17 +120,7 @@ node-lifecycle --version=18.20.4 --no-fail
 
 ### GitHub Actions
 
-Example GitHub Actions job to fail if Node.js is near or past EOL:
-
-```
-jobs:
-  check-node-lifecycle:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm install -g node-lifecycle
-      - run: node-lifecycle
-```
+See the [GitHub Actions configuration example](documentation/github-actions-config-example.md).
 
 
 ## 📄 License
