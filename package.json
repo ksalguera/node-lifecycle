@@ -1,6 +1,6 @@
 {
   "name": "node-lifecycle",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Node.js EOL checker and CLI for checking version lifecycle, LTS, maintenance, and end-of-life status",
   "type": "module",
   "bin": {
