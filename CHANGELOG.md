@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2](https://github.com/ksalguera/node-lifecycle/compare/v1.2.1...v1.2.2) (2026-10-08)
+
+
+### Bug Fixes
+
+* add temp override for CVE-2026-97058 ([5a2a109](https://github.com/ksalguera/node-lifecycle/commit/5a2a1091ae0725ac8b06005a49cbd849508e2a54))
+
 ## [1.2.1](https://github.com/ksalguera/node-lifecycle/compare/v1.2.0...v1.2.1) (2026-10-03)
 
 
